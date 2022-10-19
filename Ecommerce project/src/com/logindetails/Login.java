@@ -6,18 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import com.prodcutsinfo.Connectivity;
-import com.prodcutsinfo.HomePage;
+import com.cartdeatils.Cart;
+import com.databaseconnection.Connectivity;
+import com.homescreen.HomePage;
+import com.productlist.ProductList;
+import com.userproducthistory.ProductHistory;
 
 public class Login {
 
-	// object of home page.
-	HomePage obj1 = new HomePage();
+	// object of cart class
+	Cart cart = new Cart();
 
 	public void addLogin() {
 
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please Login yourself.");
 
 		System.out.println("Enter the username :");
 		String name = sc.nextLine();
@@ -32,31 +34,40 @@ public class Login {
 
 			ResultSet rs = pt.executeQuery();
 
+			int flag = 0;
+			int id = 0;
+
 			while (rs.next()) {
+
 				if (name.equals(rs.getString(2)) && password.equals(rs.getString(4))) {
-					System.out.println("Login Successfully.");
 
-					obj1.listOfProduct();
+					id = rs.getInt(1);
 
-				} else if (name.equals("admin") && password.equals("admin123")) {
-
-					obj1.adminview();
-					
+					flag = 1;
+					break;
 
 				}
-
-				else {
-					System.err.println("Please register yourself or check username or password.");
-					HomePage obj = new HomePage();
-					obj.selectLogin();
-				}
-
 			}
-		} catch (SQLException e) {
+			if (flag != 1) {
+				System.err.println("Please register yourself or check username or password.");
+				HomePage obj = new HomePage();
+				obj.selectLogin();
+			} else {
+
+				System.out.println("Login Successfully.");
+				// Main methods.
+				ProductList.productList();
+				cart.addtoCart(id);
+				cart.buyproduct(id);
+			}
+
+		}
+
+		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
 
 	}
-
 }

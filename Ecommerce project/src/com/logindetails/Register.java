@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import com.prodcutsinfo.Connectivity;
+import com.databaseconnection.Connectivity;
 
 public class Register {
 
@@ -16,6 +16,7 @@ public class Register {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("Enter your username :");
+
 		String username = sc.nextLine();
 
 		System.out.println("Enter your Mobile Number :");
